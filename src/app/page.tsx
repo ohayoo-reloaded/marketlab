@@ -1,6 +1,10 @@
 import { getItems } from "@/server/query";
 import Image from "next/image";
 import { AddItemForm } from "./_components/_add-items-modal/product-form";
+import Link from "next/link";
+
+export const dynamic = "force-dynamic";
+
 
 export default async function Home() {
   const items = await getItems();
@@ -11,7 +15,11 @@ export default async function Home() {
       <div>
         {items.length > 0 ? (
           items.map((item, index) => (
-            <div key={index}>{item.name}</div> // Adjust this based on your item structure
+            <div key={item.id} className="flex w-48 flex-col">
+                      <Link href={`/item/${item.id}`}>
+            <div key={index}>{item.name}</div>
+            </Link>
+            </div>
           ))
         ) : (
           <div>Loading...</div>
