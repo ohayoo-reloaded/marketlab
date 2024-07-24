@@ -8,6 +8,7 @@ import {
 } from "@clerk/nextjs";
 
 import { useRouter } from "next/navigation";
+import InputFile from "./_add-items-modal/upload-file-button";
 
 export function TopNav() {
   const router = useRouter();
