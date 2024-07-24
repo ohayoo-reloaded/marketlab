@@ -1,8 +1,6 @@
 import { getItems } from "@/server/query";
 import Image from "next/image";
-
 import Link from "next/link";
-import { AddItemForm } from "./common/full-add-item-view";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +23,9 @@ export default async function Home() {
           <div>Loading...</div>
         )}
       </div>
-      <AddItemForm />
+      <Link href={`/addnewitem`}>
+      <h2>CREATE NEW ITEM</h2>
+      </Link>
     </main>
   );
 }
