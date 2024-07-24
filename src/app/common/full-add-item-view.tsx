@@ -21,9 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// Assuming you have a Select component
 
-// Define the form schema using Zod
 const formSchema = z.object({
   productName: z.string().min(1, {
     message: "Product name is required.",
@@ -37,7 +35,7 @@ const formSchema = z.object({
   category: z.enum(["furniture", "technology", "other"], {
     errorMap: () => ({ message: "Category is required." }),
   }),
-  originalPrice: z.number().min(0, {
+  originalPrice: z.string().min(0, {
     message: "Original price must be a positive number.",
   }),
 });
@@ -57,12 +55,20 @@ export function AddItemForm() {
       description: "",
       boughtAt: "",
       category: "furniture",
-      originalPrice: 0,
+      originalPrice: "0",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
+    console.log("Raw form data:", data);
+
+    // Check the type of `originalPrice` before conversion
+    console.log("Type of originalPrice:", typeof data.originalPrice);
+    const processedData = {
+      ...data,
+      originalPrice: parseInt(data.originalPrice.toString()),
+    };
+    console.log("Form data:", processedData);
   };
 
   return (
@@ -158,7 +164,7 @@ export function AddItemForm() {
               <FormControl>
                 <Input
                   type="number"
-                  step="0.01"
+                  step="1"
                   placeholder="Enter original price"
                   {...field}
                 />
