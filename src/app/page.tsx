@@ -1,7 +1,8 @@
 import { getItems } from "@/server/query";
 import Image from "next/image";
-import { AddItemForm } from "./common/add-item-view/product-form";
+
 import Link from "next/link";
+import { AddItemForm } from "./common/full-add-item-view";
 
 export const dynamic = "force-dynamic";
 
