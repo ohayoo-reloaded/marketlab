@@ -35,9 +35,14 @@ const formSchema = z.object({
   category: z.enum(["furniture", "technology", "other"], {
     errorMap: () => ({ message: "Category is required." }),
   }),
-  originalPrice: z.string().min(0, {
-    message: "Original price must be a positive number.",
-  }),
+  originalPrice: z
+    .string()
+    .refine((value) => !isNaN(parseFloat(value)) && parseFloat(value) >= 0, {
+      message: "Original price must be a positive number.",
+    })
+    .refine((value) => /^\d+(\.\d{1,2})?$/.test(value), {
+      message: "Original price can have up to 2 decimal places.",
+    }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -66,7 +71,7 @@ export function AddItemForm() {
     console.log("Type of originalPrice:", typeof data.originalPrice);
     const processedData = {
       ...data,
-      originalPrice: parseInt(data.originalPrice.toString()),
+      originalPrice: parseFloat(data.originalPrice).toFixed(2),
     };
     console.log("Form data:", processedData);
   };
@@ -145,8 +150,8 @@ export function AddItemForm() {
                   <SelectContent>
                     <SelectItem value="furniture">Furniture</SelectItem>
                     <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="technology">Hobbies</SelectItem>
-                    <SelectItem value="technology">Fashion</SelectItem>
+                    <SelectItem value="tech">Hobbies</SelectItem>
+                    <SelectItem value="fashion">Fashion</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
@@ -164,7 +169,7 @@ export function AddItemForm() {
               <FormControl>
                 <Input
                   type="number"
-                  step="1"
+                  step="0.01"
                   placeholder="Enter original price"
                   {...field}
                 />
