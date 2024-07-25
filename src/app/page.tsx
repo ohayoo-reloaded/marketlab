@@ -19,7 +19,7 @@ export default async function Home() {
                   alt={item.name}
                   src={item.imgurl}
                   width={"200"}
-                  height={"200"}
+                  height={"300"}
                 />
                 <div key={index}>{item.name}</div>
               </Link>
