@@ -34,7 +34,6 @@ export async function getItem(id: number): Promise<Item> {
 }
 
 export async function addItem(item: Item) {
-  // const user = auth();
   const newItem = await db
     .insert(itemsTable)
     .values({
@@ -42,7 +41,7 @@ export async function addItem(item: Item) {
       description: item.description,
       boughtAt: item.boughtAt,
       category: item.category,
-      originalPrice: item.originalPrice,
+      originalPrice: item.originalPrice.toString(),
       imgurl: item.imgurl,
       userId: item.userId,
       createdAt: item.createdAt,
