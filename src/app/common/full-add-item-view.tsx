@@ -23,9 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Item } from "@/types/item";
 import { addItemHandler } from "@/lib/addItemHandler";
-import { SimpleUploadButton } from "../_components/simple-upload-button";
 import { UploadButton } from "../utils/uploadthing";
-import { url } from "inspector";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -55,6 +54,7 @@ type FormValues = z.infer<typeof formSchema>;
 let newImage = "";
 
 export function AddItemForm() {
+  const router = useRouter();
   const form = useForm();
   const {
     control,
@@ -74,8 +74,6 @@ export function AddItemForm() {
   const onSubmit = async (data: FormValues) => {
     console.log("Raw form data:", data);
 
-    console.log("Type of originalPrice:", typeof data.originalPrice);
-    console.log("Form data:", data);
     const newItem: Item = {
       id: 0,
       name: data.name,
@@ -88,12 +86,21 @@ export function AddItemForm() {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    addItemHandler(newItem);
+    await addItemHandler(newItem);
+    router.back();
   };
 
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
+      <style jsx global>{`
+        [data-ut-element="allowed-content"] {
+          display: none;
+        }
+      `}</style>
+      <form
+        className="space-y-4 p-6 bg-zinc-800 rounded-lg max-w-lg w-full max-h-[90vh] overflow-auto"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <FormField
           control={control}
           name="name"
@@ -144,21 +151,14 @@ export function AddItemForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
+        <FormItem>
+          <FormLabel>Category</FormLabel>
+          <Controller
+            control={control}
+            name="category"
+            render={({ field }) => (
               <FormControl>
-                <Select
-                  {...field}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <FormDescription>
-                    Select the category of the product.
-                  </FormDescription>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -171,10 +171,13 @@ export function AddItemForm() {
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormMessage>{errors.category?.message}</FormMessage>
-            </FormItem>
-          )}
-        />
+            )}
+          />
+          <FormDescription>
+            Select the category of the product.
+          </FormDescription>
+          <FormMessage>{errors.category?.message}</FormMessage>
+        </FormItem>
         <FormField
           control={control}
           name="originalPrice"
@@ -210,7 +213,9 @@ export function AddItemForm() {
             alert(`ERROR! ${error.message}`);
           }}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-center">
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   );

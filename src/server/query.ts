@@ -10,7 +10,7 @@ export async function getItems() {
   return items;
 }
 
-export async function getItem(id: number) {
+export async function getItem(id: number): Promise<Item> {
   // const user = auth();
   // if (!user.userId) throw new Error("Unauthorized");
 
@@ -18,8 +18,19 @@ export async function getItem(id: number) {
     where: (model, { eq }) => eq(model.id, id),
   });
   if (!item) throw new Error("Item not found");
-
-  return item;
+  const newItem: Item = {
+    id: item.id,
+    name: item.name,
+    description: item.description!,
+    boughtAt: new Date(item.boughtAt),
+    category: item.category,
+    originalPrice: Number(item.originalPrice),
+    imgurl: item.imgurl,
+    userId: item.userId,
+    createdAt: new Date(item.createdAt),
+    updatedAt: new Date(item.updatedAt!),
+  };
+  return newItem;
 }
 
 export async function addItem(item: Item) {
