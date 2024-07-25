@@ -14,7 +14,9 @@ export function TopNav() {
   const router = useRouter();
   return (
     <nav className="flex w-full items-center justify-between border-b p-4 text-xl font-semibold">
+    <Link href="/">
       <div>Second Hand market</div>
+      </Link>
       <Link href={`/addnewitem`}>
         <h2 className="bg-green-900 p-2 rounded">CREATE NEW ITEM</h2>
       </Link>
