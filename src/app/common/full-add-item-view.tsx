@@ -145,8 +145,8 @@ export function AddItemForm() {
                   <SelectContent>
                     <SelectItem value="furniture">Furniture</SelectItem>
                     <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="technology">Hobbies</SelectItem>
-                    <SelectItem value="technology">Fashion</SelectItem>
+                    <SelectItem value="hobbies">Hobbies</SelectItem>
+                    <SelectItem value="fashion">Fashion</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
