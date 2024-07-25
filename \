@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Item } from "@/types/item";
-import { addItemHandler } from "@/lib/addItemHandler";
+import { auth } from "@clerk/nextjs/server";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -34,8 +34,8 @@ const formSchema = z.object({
   boughtAt: z.string().min(1, {
     message: "Bought date is required.",
   }),
-  category: z.string().min(1, {
-  message:"Category is required.",
+  category: z.enum(["furniture", "technology", "other"], {
+    errorMap: () => ({ message: "Category is required." }),
   }),
   originalPrice: z
     .string()
@@ -66,25 +66,25 @@ export function AddItemForm() {
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = (data: FormValues) => {
     console.log("Raw form data:", data);
-
+    try{
+      const user = auth();}
+      catch{
+        throw new Error('auth failed')
+      }
+    if(!user){
+      throw new Error('no user logged in')
+    }
     console.log("Type of originalPrice:", typeof data.originalPrice);
-    console.log("Form data:", data);
-    const newItem:Item = {
-      id: 0,
-      name: data.name,
-      description: data.description,
-      boughtAt: new Date(data.boughtAt),
-      category: data.category,
-      originalPrice: Number(data.originalPrice),
-      imgurl: "",
-      userId: "",
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    const processedData = {
+        ...data,
+        imgurl: "",
+        userId: user.userId,
+        createdAt: undefined,
+        updatedAt: undefined
     };
-    addItemHandler(newItem);
-
+    console.log("Form data:", processedData);
   };
 
   return (

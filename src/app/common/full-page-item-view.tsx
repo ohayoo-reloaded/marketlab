@@ -1,11 +1,12 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { getItem } from "@/server/query";
+import { Item } from "@/types/item";
 
   export async function FullPageItemView(props: { itemId: string }) {
   const idAsNumber = Number(props.itemId);
   if (Number.isNaN(idAsNumber)) throw new Error("Invalid photo id");
 
-  const item = await getItem(idAsNumber);
+  const item:Item = await getItem(idAsNumber);
 
 //  const userInfo = await clerkClient.users.getUser(item.userId);
 

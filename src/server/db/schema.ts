@@ -19,7 +19,7 @@ import {
  */
 export const createTable = pgTableCreator((name) => `market_${name}`);
 
-export const items = createTable(
+export const itemsTable = createTable(
   "item",
   {
     id: serial("id").primaryKey(),
