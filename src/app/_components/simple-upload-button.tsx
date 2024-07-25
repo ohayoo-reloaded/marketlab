@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useUploadThing } from "~/utils/uploadthing";
+import { useUploadThing } from "../utils/uploadthing";
 
 // inferred input off useUploadThing
 type Input = Parameters<typeof useUploadThing>;

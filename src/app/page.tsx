@@ -15,6 +15,12 @@ export default async function Home() {
           items.map((item, index) => (
             <div key={item.id} className="flex w-48 flex-col">
               <Link href={`/item/${item.id}`}>
+                <img
+                  alt={item.name}
+                  src={item.imgurl}
+                  width={"200"}
+                  height={"200"}
+                />
                 <div key={index}>{item.name}</div>
               </Link>
             </div>
@@ -24,7 +30,7 @@ export default async function Home() {
         )}
       </div>
       <Link href={`/addnewitem`}>
-      <h2>CREATE NEW ITEM</h2>
+        <h2>CREATE NEW ITEM</h2>
       </Link>
     </main>
   );

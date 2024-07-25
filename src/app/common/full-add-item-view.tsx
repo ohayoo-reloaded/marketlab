@@ -23,6 +23,9 @@ import {
 } from "@/components/ui/select";
 import { Item } from "@/types/item";
 import { addItemHandler } from "@/lib/addItemHandler";
+import { SimpleUploadButton } from "../_components/simple-upload-button";
+import { UploadButton } from "../utils/uploadthing";
+import { url } from "inspector";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -35,7 +38,7 @@ const formSchema = z.object({
     message: "Bought date is required.",
   }),
   category: z.string().min(1, {
-  message:"Category is required.",
+    message: "Category is required.",
   }),
   originalPrice: z
     .string()
@@ -48,6 +51,8 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+let newImage = "";
 
 export function AddItemForm() {
   const form = useForm();
@@ -71,20 +76,19 @@ export function AddItemForm() {
 
     console.log("Type of originalPrice:", typeof data.originalPrice);
     console.log("Form data:", data);
-    const newItem:Item = {
+    const newItem: Item = {
       id: 0,
       name: data.name,
       description: data.description,
       boughtAt: new Date(data.boughtAt),
       category: data.category,
       originalPrice: Number(data.originalPrice),
-      imgurl: "",
+      imgurl: newImage,
       userId: "",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
     addItemHandler(newItem);
-
   };
 
   return (
@@ -191,6 +195,20 @@ export function AddItemForm() {
               <FormMessage>{errors.originalPrice?.message}</FormMessage>
             </FormItem>
           )}
+        />
+        <UploadButton
+          endpoint="imageUploader"
+          onClientUploadComplete={(res) => {
+            const [{ url }] = res;
+            newImage = url;
+
+            console.log("Files: ", res);
+            alert("Upload Completed");
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
         />
         <Button type="submit">Submit</Button>
       </form>
