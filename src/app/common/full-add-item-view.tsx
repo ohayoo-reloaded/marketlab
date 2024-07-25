@@ -67,7 +67,6 @@ export function AddItemForm() {
   const onSubmit = (data: FormValues) => {
     console.log("Raw form data:", data);
 
-    // Check the type of `originalPrice` before conversion
     console.log("Type of originalPrice:", typeof data.originalPrice);
     const processedData = {
       ...data,
@@ -150,7 +149,7 @@ export function AddItemForm() {
                   <SelectContent>
                     <SelectItem value="furniture">Furniture</SelectItem>
                     <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="tech">Hobbies</SelectItem>
+                    <SelectItem value="hobbies">Hobbies</SelectItem>
                     <SelectItem value="fashion">Fashion</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
